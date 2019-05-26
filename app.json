@@ -1,0 +1,13 @@
+{
+  "name": "concat-tv",
+  "description": "Concat TV",
+  "keywords": [
+    "Concat",
+    "TV"
+  ],
+  "scripts": {
+    "dokku": {
+      "postdeploy": "bundle exec rake db:migrate"
+    }
+  }
+}

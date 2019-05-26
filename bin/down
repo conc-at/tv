@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker-compose -p tv -f tv.dev.yml down

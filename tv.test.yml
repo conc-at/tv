@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: tv
+      POSTGRES_PASSWORD: tv
+      POSTGRES_DB: tv_test
+
+  redis:
+    image: redis:5-alpine
+
+  tv:
+    build:
+      context: .
+      dockerfile: test.Dockerfile
+    depends_on:
+      - db
+      - redis

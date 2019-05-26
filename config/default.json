@@ -1,8 +1,0 @@
-{
-  "server": {
-    "port": 5000
-  },
-  "iptv": {
-    "url": "http://sock.one:83/get.php?username=XE1mHfz8&password=6UDmA98w&type=m3u_plus&output=m3u8"
-  }
-}

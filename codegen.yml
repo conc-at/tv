@@ -1,0 +1,28 @@
+overwrite: true
+schema: 'http://localhost:5000/graphql'
+documents: 'app/ui/**/*.graphql'
+generates:
+  app/ui/types.ts:
+    plugins:
+      - 'typescript'
+  app/ui/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .gen.ts
+      baseTypesPath: types.ts
+    plugins:
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      skipTypename: false
+      withHooks: true
+      withHOC: false
+      withComponent: false
+  app/ui/introspection-result.ts:
+    plugins:
+      - 'fragment-matcher'
+  schema.json:
+    plugins:
+      - introspection
+    config:
+      minify: true

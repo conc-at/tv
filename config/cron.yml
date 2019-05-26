@@ -1,0 +1,4 @@
+fetch_playlists:
+  cron: "0 */2 * * *"
+  class: "FetchPlaylistsWorker"
+  queue: "default"

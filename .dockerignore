@@ -1,7 +1,17 @@
 .editorconfig
+.env
 .eslintrc
+.git
 .gitignore
+.graphqlconfig
+.idea
 .nvmrc
 .prettierrc
+
+Procfile.dev
 README.md
+tv.dev.yml
+tv.test.yml
+
 node_modules/
+tmp/

@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# Functions
+print_error() {
+  echo -e "\033[31mError: $1\033[0m" >&2
+}
+
+has_cmd() {
+    if ! [ -x "$(command -v "$1")" ]; then
+        print_error "$1 is not installed."
+        exit 1
+    fi
+}
+
+has_file() {
+    if [ ! -f "$1" ]; then
+        print_error "$1 not found but file is required!"
+        exit 1
+    fi
+}
+
+formula_installed() {
+    brew list --versions | grep "$1"
+    return $?
+}
+
+ensure_formula() {
+    if ! formula_installed "$1"; then
+        brew install "$1"
+    fi
+    deps=$((deps + 1))
+    echo "$deps. $1 installed and active"
+}
+
+ensure_service() {
+  NAME=$1
+  HOST_AND_PORT=$2
+  CALL=$3
+
+  echo "Waiting for $NAME."
+  ./bin/wait-for-it -s -q -t 60 "$HOST_AND_PORT"
+  if [ $? -eq 0 ]; then
+    echo "$NAME is up."
+    "$CALL"
+  else
+    echo "Given up waiting for $NAME."
+  fi
+}
+
+database_up() {
+  rails db:migrate
+}
+
+# Variables
+deps=0
+
+# Prerequisites
+has_cmd "brew"
+has_cmd "docker"
+has_cmd "foreman"
+has_cmd "git"
+
+#has_file "config/master.key"
+if [[ ! -f "config/master.key" ]]
+then
+    echo '30a2dc62b4ec041f04519ff2b9d2d66d' > "./config/master.key"
+fi
+
+# Update repository
+brew update
+
+# Homebrew
+ensure_formula "postgres"
+
+# Bundler
+bundle install
+
+# Yarn
+yarn install
+
+# Docker
+docker-compose -p tv -f tv.dev.yml up -d
+
+# Database
+ensure_service "Database" "localhost:5432" database_up

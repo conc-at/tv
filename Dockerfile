@@ -1,16 +1,33 @@
-FROM mhart/alpine-node:12
+FROM ruby:2.7.0-alpine3.11
+
+ENV RAILS_ENV=production
 
 WORKDIR /app
 
-COPY ./package.json package.json
-COPY ./package-lock.json package-lock.json
+COPY Gemfile Gemfile
+COPY Gemfile.lock Gemfile.lock
+
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+
+RUN gem install bundler
+
+RUN apk --update add bash postgresql-client tzdata yarn nodejs libcurl
+RUN apk --update add --virtual build-dependencies \
+    git \
+    build-base \
+    postgresql-dev \
+    && bundle install \
+    && yarn install \
+    && apk del build-dependencies
+
+# required by config/puma.rb
+RUN mkdir -p tmp/pids
 
 ENV NODE_ENV=production
 
-RUN npm install --production
+COPY . .
 
-COPY . ./
+RUN ./bin/webpack
 
-EXPOSE 5000
-
-CMD ["node", "app/index.mjs"]
+EXPOSE 3000

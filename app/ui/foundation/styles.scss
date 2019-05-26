@@ -1,0 +1,18 @@
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.ReactVirtualized__Grid {
+  outline: none;
+}
