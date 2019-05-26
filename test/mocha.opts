@@ -1,0 +1,6 @@
+--recursive
+--require @std/esm
+--require should
+--reporter spec
+--ui bdd
+--timeout 5000

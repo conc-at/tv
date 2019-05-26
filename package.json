@@ -1,0 +1,45 @@
+{
+  "name": "tv",
+  "version": "1.0.0",
+  "description": "The .concat() TV service",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "nodemon -x \"node --no-warnings --experimental-modules\" app/index.mjs",
+    "test": "NODE_OPTIONS=no-warnings NODE_ENV=test mocha './test/**/*.mjs'",
+    "test:coverage": "NODE_OPTIONS=no-warnings NODE_ENV=test nyc --reporter=cobertura mocha './test/**/*.mjs'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/eliias/concat-tv.git"
+  },
+  "keywords": [
+    "IPTV"
+  ],
+  "author": "Hannes Moser <box@hannesmoser.at>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eliias/concat-tv/issues"
+  },
+  "homepage": "https://github.com/eliias/concat-tv#readme",
+  "dependencies": {
+    "config": "^3.1.0",
+    "fs-extra": "^8.0.1",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "m3u8-file-parser": "^0.2.0"
+  },
+  "devDependencies": {
+    "@std/esm": "^0.26.0",
+    "eslint-config-prettier": "^4.3.0",
+    "mocha": "^6.1.4",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.17.1",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": ">=11.5.0",
+    "npm": ">=6.5.0"
+  }
+}
