@@ -20,10 +20,18 @@
 
 ### Windows
 
-Follow instructions in [./bin/up.win](./bin/up.win).
+Follow instructions in [./bin/up.ps1](./bin/up.ps1).
 
 ```pwsh
-./bin/start.win
+./bin/up.ps1
+./bin/start.ps1
+```
+
+#### Additional setup for Docker Toolbox (Windows 10 Home):
+Look for every `localhost` in the database config files (`cable.yml` and `database.yml`) and replace it with the IP address of the docker-machine (e.g. `192.168.99.100`). You can find this IP address with following command: 
+
+```
+docker-machine ip
 ```
 
 ### Result

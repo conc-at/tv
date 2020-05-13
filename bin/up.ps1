@@ -6,7 +6,7 @@
 
 gem install foreman
 
-Add-Content ./config/master.key "30a2dc62b4ec041f04519ff2b9d2d66d"
+Set-Content ./config/master.key "30a2dc62b4ec041f04519ff2b9d2d66d"
 
 yarn install
 

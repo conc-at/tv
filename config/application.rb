@@ -17,7 +17,7 @@ require 'action_cable/engine'
 require 'sprockets/railtie'
 
 # Warnings: Ruby 2.7 deprecations
-Warning[:deprecated] = false
+# Warning[:deprecated] = false
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.

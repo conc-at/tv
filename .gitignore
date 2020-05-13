@@ -35,3 +35,6 @@ yarn-debug.log*
 
 # Ignore generated files
 *.gen.ts
+
+# Ignore local variables
+.env.local

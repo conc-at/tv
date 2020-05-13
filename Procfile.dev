@@ -1,3 +1,3 @@
 web: bundle exec rails s
 worker: bundle exec sidekiq -C config/sidekiq.yml
-app: ./bin/webpack-dev-server
+app: ruby bin/webpack-dev-server
