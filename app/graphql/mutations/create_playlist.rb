@@ -8,7 +8,7 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(name:)
-      result = ::CreatePlaylist.(name: name)
+      result = ::CreatePlaylist.(name: name, user: context[:current_user])
       return { errors: [result.error] } if result.failure?
 
       {

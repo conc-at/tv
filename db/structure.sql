@@ -129,7 +129,7 @@ BEGIN
         r_rel := pos1.p::float8 / pos1.q;
     END IF;
 
-    
+
     -- find the next adjacent row in the desired direction
     -- (might not exist).
     IF is_before THEN
@@ -152,19 +152,19 @@ BEGIN
           LIMIT 1
           INTO pos2.p, pos2.q;
     END IF;
-    
+
     -- compute insert fraction
     SELECT *
     INTO np, nq
     FROM channels_sbt_mediant(COALESCE(pos1.p, 0), COALESCE(pos1.q, 1),
                      COALESCE(pos2.p, 1), COALESCE(pos2.q, 0));
-    
-    
+
+
     -- move the specified row
     UPDATE "channels"
       SET ("position".p, "position".q) = (np, nq)
     WHERE "id" = row_id;
-    
+
     -- want to renormalize both to avoid possibility of integer overflow
     -- and to ensure that distinct fraction values map to distinct float8
     -- values. Bounding to 10 million gives us reasonable headroom while
@@ -713,8 +713,7 @@ CREATE TABLE public.playlists (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     "position" public.rationale,
-    user_id bigint NOT NULL,
-    state public.playlist_state DEFAULT 'draft'::public.playlist_state
+    user_id bigint NOT NULL
 );
 
 
@@ -1008,6 +1007,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200517192132'),
 ('20200517192245'),
 ('20200517192358'),
-('20210531104604');
-
-
+('20200517192358');
