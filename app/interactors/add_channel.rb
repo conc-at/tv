@@ -9,6 +9,7 @@ class AddChannel
       path: context.path,
       state: context.state
     )
+
     notify_client
   rescue StandardError => e
     context.fail!(error: e.message)

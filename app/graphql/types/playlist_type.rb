@@ -6,8 +6,6 @@ module Types
     field :name, ID, null: false
     field :channels, Types::ChannelType.connection_type, null: true
 
-    def channels
-      object.channels.ordered
-    end
+    delegate :channels, to: :object
   end
 end

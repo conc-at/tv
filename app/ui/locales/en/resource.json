@@ -1,0 +1,58 @@
+{
+  "channels": {
+    "title": "Channels"
+  },
+  "playlists": {
+    "title": "Playlists",
+    "delete": {
+      "confirm": "Are you sure you want to delete the playlist?",
+      "yes": "Yep",
+      "cancel": "Hell No!"
+    },
+    "form": {
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "new": {
+      "button": "New playlist",
+      "error": "Oh oh, cannot create new playlist.",
+      "success": "Yay! Have fun with your new playlist."
+    },
+    "list": {
+      "edit": "Edit",
+      "download": "Download",
+      "open": "Channels"
+    }
+  },
+  "profile": {
+    "title": "User profile",
+    "user": {
+      "info": "You are currently logged in as: {{user.name}}"
+    },
+    "online": "Online"
+  },
+  "nav": {
+    "item": {
+      "login": "Login",
+      "channels": "Channels",
+      "playlists": "Playlists",
+      "profile": "Profile",
+      "logout": "Logout {{user.name}}",
+      "online": "Online users"
+    }
+  },
+  "playlist": {
+    "edit": {
+      "success": "Playlist successfully saved.",
+      "error": "Cannot save playlist. Please try again."
+    }
+  },
+  "selected_channels": {
+    "list": {
+      "delete": "Delete"
+    }
+  },
+  "login": {
+    "login": "Login"
+  }
+}

@@ -7,8 +7,18 @@ class GraphqlController < ApplicationController
     variables = ensure_hash(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {}
-    result = ConcatTvSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    context = {
+      current_user: current_user,
+    }
+    result = ConcatTvSchema.execute(
+      query,
+      {
+        variables: variables,
+        context: context,
+        operation_name: operation_name,
+      }
+    )
+
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -17,6 +27,11 @@ class GraphqlController < ApplicationController
   end
 
   private
+
+  def current_user
+    name = request.headers['authorization'] || 'anonymous'
+    EnsureUser.(name: name).user
+  end
 
   # Handle form data, JSON body, or a blank value
   def ensure_hash(ambiguous_param)
@@ -40,6 +55,11 @@ class GraphqlController < ApplicationController
     logger.error err.message
     logger.error err.backtrace.join("\n")
 
-    render json: { error: { message: err.message, backtrace: err.backtrace }, data: {} }, status: :internal_server_error
+    render json: {
+      error: {
+        message: err.message, backtrace: err.backtrace,
+      },
+      data: {},
+    }, status: :internal_server_error
   end
 end
