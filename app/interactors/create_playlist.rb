@@ -4,7 +4,7 @@ class CreatePlaylist
   include Interactor
 
   def call
-    context.playlist = Playlist.create!(name: context.name)
+    context.playlist = Playlist.create!(name: context.name, user: context.user)
 
     notify_client
   rescue ActiveRecord::RecordNotUnique
