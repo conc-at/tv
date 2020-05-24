@@ -10,6 +10,7 @@ export default function Playlists() {
     <Page>
       <Heading variant="h1">{t('playlists.title')}</Heading>
       <Hr />
+      <p>Playlists anyone?</p>
     </Page>
   );
 }
