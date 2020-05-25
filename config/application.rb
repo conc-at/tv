@@ -16,9 +16,6 @@ require 'action_view/railtie'
 require 'action_cable/engine'
 require 'sprockets/railtie'
 
-# Warnings: Ruby 2.7 deprecations
-# Warning[:deprecated] = false
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

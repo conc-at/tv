@@ -29,7 +29,8 @@ class GraphqlController < ApplicationController
   private
 
   def current_user
-    request.headers['authorization'] || 'anonymous'
+    name = request.headers['authorization'] || 'anonymous'
+    EnsureUser.(name: name)
   end
 
   # Handle form data, JSON body, or a blank value

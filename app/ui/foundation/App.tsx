@@ -1,12 +1,17 @@
 import React from 'react';
 import {
+  Redirect,
+  Route,
   BrowserRouter as Router,
+  Switch,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import 'sanitize.css';
 import 'sanitize.css/forms.css';
 import 'sanitize.css/typography.css';
 import 'react-virtualized/styles.css';
+
+import { Playlists } from 'sections';
 
 import { Nav } from './components';
 import './styles.scss';
@@ -22,6 +27,10 @@ export function App() {
       </Helmet>
       <Router>
         <Nav />
+        <Switch>
+          <Redirect from="/" to="/playlists" exact />
+          <Route path="/playlists" component={Playlists} />
+        </Switch>
       </Router>
     </>
   );
