@@ -3,13 +3,13 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/indent': 'off',
-    // 'graphql/template-strings': [
-    //   'error',
-    //   {
-    //     env: 'apollo',
-    //     schemaJson: require('./schema.json'),
-    //   },
-    // ],
+    'graphql/template-strings': [
+      'error',
+      {
+        env: 'apollo',
+        schemaJson: require('./schema.json'),
+      },
+    ],
     'import/no-unresolved': [2, { commonjs: true, amd: true }],
     'import/named': 'error',
     'import/namespace': 'error',
