@@ -8,7 +8,7 @@ generates:
   app/ui/:
     preset: near-operation-file
     presetConfig:
-      extension: .gen.ts
+      extension: .ts
       baseTypesPath: types.ts
     plugins:
       - 'typescript-operations'

@@ -6,8 +6,10 @@ module.exports = {
   resolve: {
     alias: {
       components: path.resolve(basePath, 'components'),
+      config: path.resolve(basePath, 'config'),
       foundations: path.resolve(basePath, 'foundations'),
       sections: path.resolve(basePath, 'sections'),
+      utilities: path.resolve(basePath, 'utilities'),
     },
   },
 };

@@ -1,3 +1,4 @@
 # frozen_string_literal: true
 
-User.create!(name: 'Hannes')
+user = User.create!(name: "anonymous")
+playlist = Playlist.create!(name: "Your playlist", user: user)
