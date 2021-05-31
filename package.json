@@ -16,7 +16,7 @@
     "apollo-link-http": "^1.5.16",
     "graphql": "^14.6.0",
     "graphql-ruby-client": "^1.7.6",
-    "i18next": "^19.4.4",
+    "i18next": "^20.3.1",
     "immutability-helper": "^3.0.2",
     "react": "^16.13.1",
     "react-dnd": "^10.0.2",
