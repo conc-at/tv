@@ -2,8 +2,6 @@
 
 module Types
   class SubscriptionType < BaseObject
-    extend GraphQL::Subscriptions::SubscriptionRoot
-
     field :channel_added, ChannelType, null: true,
           description: 'A channel was added.'
 
