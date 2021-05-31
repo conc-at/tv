@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.6'
 
 gem 'bootsnap', '>= 1.4.2', require: false
-gem 'graphql', '~>1.10.8'
+gem 'graphql', '~>1.12.12'
 gem 'hiredis', '~> 0.6.3'
 gem 'interactor-rails', '~> 2.2.1'
 gem 'jbuilder', '~> 2.7'
