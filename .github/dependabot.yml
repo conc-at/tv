@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "16:00"
+    timezone: EST
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "16:00"
+    timezone: EST
