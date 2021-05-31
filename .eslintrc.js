@@ -1,7 +1,7 @@
 module.exports = {
   plugins: ['graphql', 'import', 'jsx-a11y', 'prettier'],
   rules: {
-    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/indent': 'off',
     'graphql/template-strings': [
       'error',
@@ -27,7 +27,6 @@ module.exports = {
     node: true,
   },
   extends: [
-    'prettier/@typescript-eslint',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
@@ -50,7 +49,7 @@ module.exports = {
         extensions: ['.ts', '.tsx'],
       },
       typescript: {
-        directory: './',
+        project: './',
       },
     },
     react: {

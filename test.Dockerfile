@@ -1,4 +1,4 @@
-FROM ruby:2.6.5-alpine3.10
+FROM ruby:2.6.6-alpine3.13
 
 ENV RAILS_ENV=test
 ENV RAILS_MASTER_KEY=30a2dc62b4ec041f04519ff2b9d2d66d

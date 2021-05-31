@@ -70,6 +70,7 @@ fi
 brew update
 
 # Homebrew
+ensure_formula "shared-mime-info"
 ensure_formula "postgres"
 
 # Bundler
