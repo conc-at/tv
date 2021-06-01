@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import 'sanitize.css';
 import 'sanitize.css/forms.css';
