@@ -11,20 +11,20 @@
 // MySet.difference(…)
 //
 
-class BetterSet extends Set {
-  difference(b: BetterSet) {
+class BetterSet<T> extends Set<T> {
+  difference(b: BetterSet<T>) {
     return new BetterSet([...this].filter((a) => !b.has(a)));
   }
 
-  intersection(b: BetterSet) {
+  intersection(b: BetterSet<T>) {
     return new BetterSet([...this].filter((a) => b.has(a)));
   }
 
-  union(b: BetterSet) {
+  union(b: BetterSet<T>) {
     return new BetterSet([...this, ...b]);
   }
 
-  map(cb) {
+  map(cb: (arg0: T) => void) {
     for (const a of this) {
       cb(a);
     }
