@@ -15,12 +15,9 @@ module.exports = {
     'import/namespace': 'error',
     'import/default': 'error',
     'import/export': 'error',
-    indent: [2, 2],
     'linebreak-style': [2, 'unix'],
-    quotes: [2, 'single'],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    semi: [2, 'always'],
   },
   env: {
     es6: true,
