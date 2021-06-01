@@ -48,7 +48,7 @@ ensure_service() {
 }
 
 database_up() {
-  rails db:migrate
+  rails db:prepare
 }
 
 # Variables
