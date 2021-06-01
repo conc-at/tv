@@ -5,7 +5,7 @@
 class BetterDate {
   day: number;
   month: number;
-  year: number;
+  readonly year: number;
 
   constructor(day: number, month: number, year: number) {
     this.day = day;
@@ -17,7 +17,6 @@ class BetterDate {
 class NowDate extends BetterDate {
   public thisYear() {
     // this should not be allowed
-    this.year = 1920;
   }
 }
 
