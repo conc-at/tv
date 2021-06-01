@@ -26,9 +26,8 @@ class BetterSet<T> extends Set {
     return new BetterSet<T>([...this, ...b]);
   }
 
-  map(cb: Function) {
+  map(cb: (a: T) => void) {
     for (const a of this) {
-      a as T;
       cb(a);
     }
   }
