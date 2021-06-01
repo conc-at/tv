@@ -1,7 +1,7 @@
 // Control Flow Based Type Annotations
 // 1. Make sure that the type of variable is always narrowed down properly
 
-let paragraph;
+let paragraph: string | string[];
 
 paragraph = "Lorem ipsum dolor amet sit";
 paragraph.trim();

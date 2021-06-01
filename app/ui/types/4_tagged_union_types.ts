@@ -15,7 +15,9 @@ type UpdatePlaylist = {
   name: string;
 }
 
-function dispatch(action) {
+type PlaylistAction = CreatePlaylist | DeletePlaylist | UpdatePlaylist;
+
+function dispatch(action: PlaylistAction) {
   switch (action.type) {
     case 'create':
       return 'create new playlist'
