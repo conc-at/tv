@@ -17,7 +17,7 @@ class BetterDate {
 class NowDate extends BetterDate {
   public thisYear() {
     // this should not be allowed
-    this.year = 1920;
+    // this.year = 1920;
   }
 }
 
