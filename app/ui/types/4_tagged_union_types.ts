@@ -4,24 +4,26 @@
 type CreatePlaylist = {
   type: 'create';
   name: string;
-}
+};
 
 type DeletePlaylist = {
   type: 'delete';
-}
+};
 
 type UpdatePlaylist = {
   type: 'update';
   name: string;
-}
+};
 
-function dispatch(action) {
+type Playlist = CreatePlaylist | UpdatePlaylist | DeletePlaylist;
+
+function dispatch(action: Playlist): Playlist {
   switch (action.type) {
     case 'create':
-      return 'create new playlist'
+      return { type: 'create', name: 'asdf' };
     case 'update':
-      return 'update playlist'
+      return { type: 'update', name: 'asdf2' };
     case 'delete':
-      return 'delete playlist'
+      return { type: 'delete' };
   }
 }
