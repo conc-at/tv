@@ -17,13 +17,13 @@ type UpdatePlaylist = {
 
 type Playlist = CreatePlaylist | UpdatePlaylist | DeletePlaylist;
 
-function dispatch(action: Playlist): Playlist {
+function dispatch(action: Playlist): string {
   switch (action.type) {
     case 'create':
-      return { type: 'create', name: 'asdf' };
+      return 'create new playlist';
     case 'update':
-      return { type: 'update', name: 'asdf2' };
+      return 'update playlist';
     case 'delete':
-      return { type: 'delete' };
+      return 'delete playlist';
   }
 }
