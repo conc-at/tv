@@ -3,9 +3,9 @@
 // Make sure that TypeScript prevents such accidents in the future.
 
 class BetterDate {
-  day: number;
-  month: number;
-  year: number;
+  readonly day: number;
+  readonly month: number;
+  readonly year: number;
 
   constructor(day: number, month: number, year: number) {
     this.day = day;
@@ -17,7 +17,7 @@ class BetterDate {
 class NowDate extends BetterDate {
   public thisYear() {
     // this should not be allowed
-    this.year = 1920;
+    // this.year = 1920;
   }
 }
 
