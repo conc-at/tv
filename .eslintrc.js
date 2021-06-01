@@ -2,7 +2,7 @@ module.exports = {
   plugins: ['graphql', 'import', 'jsx-a11y', 'prettier'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/indent': 'off',
+    // '@typescript-eslint/indent': 'off',
     // 'graphql/template-strings': [
     //   'error',
     //   {
@@ -15,9 +15,9 @@ module.exports = {
     'import/namespace': 'error',
     'import/default': 'error',
     'import/export': 'error',
-    indent: [2, 2],
+    // indent: [2, 2],
     'linebreak-style': [2, 'unix'],
-    quotes: [2, 'single'],
+    // quotes: [2, 'single'],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     semi: [2, 'always'],
