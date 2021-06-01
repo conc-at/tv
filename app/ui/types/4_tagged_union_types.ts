@@ -15,7 +15,11 @@ type UpdatePlaylist = {
   name: string;
 }
 
-function dispatch(action) {
+type Action = {
+  type: string
+}
+
+function dispatch(action: Action) {
   switch (action.type) {
     case 'create':
       return 'create new playlist'
