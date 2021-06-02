@@ -1,0 +1,21 @@
+fragment PlaylistFields on Playlist {
+  id
+  name
+}
+
+query Playlists {
+  playlists {
+    edges {
+      node {
+        ...PlaylistFields
+        channels {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+}

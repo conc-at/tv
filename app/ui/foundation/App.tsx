@@ -10,8 +10,10 @@ import 'sanitize.css';
 import 'sanitize.css/forms.css';
 import 'sanitize.css/typography.css';
 import 'react-virtualized/styles.css';
+import { ApolloProvider } from '@apollo/client/react';
 
 import { Playlists } from 'sections';
+import client from './client';
 
 import { Nav } from './components';
 import './styles.scss';
@@ -29,7 +31,9 @@ export function App() {
         <Nav />
         <Switch>
           <Redirect from="/" to="/playlists" exact />
-          <Route path="/playlists" component={Playlists} />
+          <ApolloProvider client={client}>
+            <Route path="/playlists" component={Playlists} />
+          </ApolloProvider>
         </Switch>
       </Router>
     </>
