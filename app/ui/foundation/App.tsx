@@ -1,6 +1,9 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import 'sanitize.css';
@@ -12,6 +15,8 @@ import { Nav } from './components';
 import './styles.scss';
 import './i18n';
 
+import { Playlists, Home, NotFound } from 'sections';
+
 export function App() {
   return (
     <>
@@ -22,6 +27,18 @@ export function App() {
       </Helmet>
       <Router>
         <Nav />
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/playlists">
+            <Playlists />
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
       </Router>
     </>
   );
