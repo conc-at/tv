@@ -16,6 +16,7 @@ import './styles.scss';
 import './i18n';
 import { Home } from '../sections/home/Home';
 import Playlists from 'sections/playlists/Playlists';
+import { NotFound } from './pages';
 
 export function App() {
   return (
@@ -38,6 +39,10 @@ export function App() {
 
           <Route path="/playlists">
             <Playlists />
+          </Route>
+
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
       </Router>
