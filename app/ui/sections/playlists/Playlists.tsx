@@ -23,7 +23,7 @@ export default function Playlists() {
     before: undefined,
   });
 
-  let { loading, data } = usePlaylistsQueryQuery({
+  const { loading, data } = usePlaylistsQueryQuery({
     variables: parameters,
   });
 
