@@ -16,22 +16,26 @@ import { Playlists } from 'sections';
 import { Nav } from './components';
 import './styles.scss';
 import './i18n';
+import { ApolloProvider } from '@apollo/client';
+import { client } from './client';
 
 export function App() {
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Concat TV</title>
-        <link rel="canonical" href="https://tv.conc.at/" />
-      </Helmet>
-      <Router>
-        <Nav />
-        <Switch>
-          <Redirect from="/" to="/playlists" exact />
-          <Route path="/playlists" component={Playlists} />
-        </Switch>
-      </Router>
+      <ApolloProvider client={client}>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Concat TV</title>
+          <link rel="canonical" href="https://tv.conc.at/" />
+        </Helmet>
+        <Router>
+          <Nav />
+          <Switch>
+            <Redirect from="/" to="/playlists" exact />
+            <Route path="/playlists" component={Playlists} />
+          </Switch>
+        </Router>
+      </ApolloProvider>
     </>
   );
 }
