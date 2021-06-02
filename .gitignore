@@ -6,7 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
-
+/vendor/bundle/ruby
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -38,3 +38,6 @@ yarn-debug.log*
 
 # Ignore local variables
 .env.local
+
+# Ignore IDEA stuff
+.idea/

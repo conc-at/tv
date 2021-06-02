@@ -10,7 +10,8 @@ export function Nav() {
   return (
     <Bar>
       <Section>
-        <Item to="/…">…</Item>
+        <Item to="/home">{t('nav.item.profile')}</Item>
+        <Item to="/playlists">{t('nav.item.playlists')}</Item>
       </Section>
     </Bar>
   );
