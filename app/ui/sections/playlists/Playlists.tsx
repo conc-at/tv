@@ -9,19 +9,21 @@ import {
 
 export default function Playlists() {
   const { t } = useTranslation();
-  const [variables, setVariables] = useState<PlaylistsQueryVariables>({ n: 3 });
+  const [variables, setVariables] = useState<PlaylistsQueryVariables>({
+    first: 3,
+  });
   const { data, loading, error } = usePlaylistsQuery({
     variables,
   });
   const onPrevious = () => {
     setVariables({
-      n: 3,
+      last: 3,
       before: data?.playlists?.pageInfo.startCursor,
     });
   };
   const onNext = () => {
     setVariables({
-      n: 3,
+      first: 3,
       after: data?.playlists?.pageInfo.endCursor,
     });
   };

@@ -4,7 +4,8 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {};
 export type PlaylistsQueryVariables = Types.Exact<{
-  n?: Types.Maybe<Types.Scalars['Int']>;
+  first?: Types.Maybe<Types.Scalars['Int']>;
+  last?: Types.Maybe<Types.Scalars['Int']>;
   after?: Types.Maybe<Types.Scalars['String']>;
   before?: Types.Maybe<Types.Scalars['String']>;
 }>;
@@ -38,8 +39,8 @@ export type PlaylistsQuery = { __typename?: 'Query' } & {
 };
 
 export const PlaylistsDocument = gql`
-  query Playlists($n: Int, $after: String, $before: String) {
-    playlists(first: $n, after: $after, before: $before) {
+  query Playlists($first: Int, $last: Int, $after: String, $before: String) {
+    playlists(first: $first, last: $last, after: $after, before: $before) {
       pageInfo {
         hasNextPage
         hasPreviousPage
@@ -69,7 +70,8 @@ export const PlaylistsDocument = gql`
  * @example
  * const { data, loading, error } = usePlaylistsQuery({
  *   variables: {
- *      n: // value for 'n'
+ *      first: // value for 'first'
+ *      last: // value for 'last'
  *      after: // value for 'after'
  *      before: // value for 'before'
  *   },

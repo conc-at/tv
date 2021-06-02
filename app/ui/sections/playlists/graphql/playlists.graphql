@@ -1,5 +1,5 @@
-query Playlists ($n: Int, $after: String, $before: String) {
-    playlists (first: $n, after: $after, before: $before) {
+query Playlists ($first: Int, $last: Int, $after: String, $before: String) {
+    playlists (first: $first, last: $last, after: $after, before: $before) {
         pageInfo {
           hasNextPage
           hasPreviousPage
