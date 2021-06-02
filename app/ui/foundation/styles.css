@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 html,
 body {
   width: 100%;
@@ -30,4 +31,38 @@ body {
 .ReactVirtualized__Grid {
   outline: none;
 }
+=======
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#root {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.ReactVirtualized__Grid {
+  outline: none;
+}
+>>>>>>> bfce3b6188278d24bc8b012453a8836d95c87a6e
 /*# sourceMappingURL=styles.css.map */
