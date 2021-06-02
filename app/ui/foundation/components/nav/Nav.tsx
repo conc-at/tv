@@ -10,7 +10,7 @@ export function Nav() {
   return (
     <Bar>
       <Section>
-        <Item to="/…">…</Item>
+        <Item to="/playlists">Playlists</Item>
       </Section>
     </Bar>
   );
