@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Heading, Hr, Page } from 'components';
+import { Heading, Hr, Page } from '../../components';
 
 export default function Playlists() {
   const { t } = useTranslation();

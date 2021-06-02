@@ -38,3 +38,6 @@ yarn-debug.log*
 
 # Ignore local variables
 .env.local
+
+# Ignore vendor
+/vendor
