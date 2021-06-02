@@ -12,10 +12,19 @@ import './i18n';
 import Playlists from 'sections/playlists/Playlists';
 import { Home } from 'sections/home';
 import { NotFound } from './pages';
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
+
+
+const cache = new InMemoryCache();
+const link = new HttpLink({
+ uri: 'https://tv.conc.at/graphql'
+});
+const client = new ApolloClient({cache, link});
 
 export function App() {
   return (
     <>
+    <ApolloProvider client={client}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Concat TV</title>
@@ -33,12 +42,13 @@ export function App() {
           </Route>
           <Route path="/home">
             <Home />
-          </Route>
+          </Route>q
           <Route path="*">
             <NotFound />
           </Route>
         </Switch>
       </Router>
+      </ApolloProvider>
     </>
   );
 }
