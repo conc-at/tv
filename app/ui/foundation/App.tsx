@@ -29,11 +29,11 @@ export function App() {
       <Router>
         <Nav />
         <Switch>
-          <Route exact path="/home">
+          <Route path="/home">
             <Home />
           </Route>
 
-          <Route path="/">
+          <Route exact path="/">
             <Redirect to="/home" />
           </Route>
 
