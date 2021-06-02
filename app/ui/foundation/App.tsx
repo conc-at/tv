@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import 'sanitize.css';
 import 'sanitize.css/forms.css';
@@ -11,6 +9,9 @@ import 'react-virtualized/styles.css';
 import { Nav } from './components';
 import './styles.scss';
 import './i18n';
+import Playlists from 'sections/playlists/Playlists';
+import { Home } from 'sections/home';
+import { NotFound } from './pages';
 
 export function App() {
   return (
@@ -22,6 +23,21 @@ export function App() {
       </Helmet>
       <Router>
         <Nav />
+
+        <Switch>
+          <Route path="/">
+            <Home />
+          </Route>
+          <Route path="/playlists">
+            <Playlists />
+          </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
       </Router>
     </>
   );
