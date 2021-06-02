@@ -1,16 +1,17 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import 'sanitize.css';
 import 'sanitize.css/forms.css';
 import 'sanitize.css/typography.css';
 import 'react-virtualized/styles.css';
+import { Playlists } from 'sections/playlists';
+import { Home } from 'sections/home';
 
 import { Nav } from './components';
-import './styles.scss';
 import './i18n';
+import { NotFound } from './pages';
+import './styles.scss';
 
 export function App() {
   return (
@@ -22,6 +23,12 @@ export function App() {
       </Helmet>
       <Router>
         <Nav />
+        <Switch>
+          <Redirect path={'/'} to={'/home'} exact></Redirect>
+          <Route path={'/home'} component={Home}></Route>
+          <Route path={'/playlists'} component={Playlists}></Route>
+          <Route path={'/*'} component={NotFound}></Route>
+        </Switch>
       </Router>
     </>
   );
