@@ -24,10 +24,10 @@ export function App() {
       <Router>
         <Nav />
         <Switch>
-          <Redirect from={'/'} to={'/home'}></Redirect>
+          <Redirect path={'/'} to={'/home'} exact></Redirect>
           <Route path={'/home'} component={Home}></Route>
           <Route path={'/playlists'} component={Playlists}></Route>
-          <Route path={'*'} component={NotFound}></Route>
+          <Route path={'/*'} component={NotFound}></Route>
         </Switch>
       </Router>
     </>
