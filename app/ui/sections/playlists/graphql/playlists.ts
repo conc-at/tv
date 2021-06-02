@@ -6,7 +6,9 @@ import * as ApolloReactHooks from '@apollo/react-hooks';
 
 export type PlaylistsQueryQueryVariables = {
   first?: Types.Maybe<Types.Scalars['Int']>;
-  cursor?: Types.Maybe<Types.Scalars['String']>;
+  last?: Types.Maybe<Types.Scalars['Int']>;
+  after?: Types.Maybe<Types.Scalars['String']>;
+  before?: Types.Maybe<Types.Scalars['String']>;
 };
 
 
@@ -30,8 +32,8 @@ export type PlaylistsQueryQuery = (
 
 
 export const PlaylistsQueryDocument = gql`
-    query PlaylistsQuery($first: Int, $cursor: String) {
-  playlists(first: $first, after: $cursor) {
+    query PlaylistsQuery($first: Int, $last: Int, $after: String, $before: String) {
+  playlists(first: $first, last: $last, after: $after, before: $before) {
     edges {
       node {
         id
@@ -62,7 +64,9 @@ export const PlaylistsQueryDocument = gql`
  * const { data, loading, error } = usePlaylistsQueryQuery({
  *   variables: {
  *      first: // value for 'first'
- *      cursor: // value for 'cursor'
+ *      last: // value for 'last'
+ *      after: // value for 'after'
+ *      before: // value for 'before'
  *   },
  * });
  */

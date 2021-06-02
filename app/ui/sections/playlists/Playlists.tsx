@@ -1,51 +1,71 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading, Hr, Page } from 'components';
-import { useQuery } from '@apollo/react-hooks';
 
 import { usePlaylistsQueryQuery } from './graphql/playlists';
-
-// import { playlistsQuery } from './graphql/playlists';
+import './Playlists.css';
 
 interface Parameters {
-  first: number;
-  cursor?: string;
+  first: number | null;
+  last: number | null;
+  after: string | undefined;
+  before: string | undefined;
 }
 
-const first = 6;
+const numberOfPlaylists = 6;
 
 export default function Playlists() {
   const { t } = useTranslation();
-  const [parameters, setParameters] = React.useState<Parameters>({ first });
-  let { loading, error, data, fetchMore } = usePlaylistsQueryQuery({
+  const [parameters, setParameters] = React.useState<Parameters>({
+    first: numberOfPlaylists,
+    last: null,
+    after: undefined,
+    before: undefined,
+  });
+
+  let { loading, data } = usePlaylistsQueryQuery({
     variables: parameters,
   });
-  // data.playlist.nodes.length
+
   let playlists = <p>Loading...</p>;
 
   if (!loading) {
-    console.log(data);
-    // setCursor(data?.playlists?.pageInfo?.endCursor);
     const playlistsLi = data?.playlists?.edges?.map((playlist) => (
       <li key={playlist?.node?.id}>
         <span>{playlist?.node?.id}</span> <span>{playlist?.node?.name}</span>
       </li>
     ));
 
-    return (
+    playlists = (
       <section>
         <ul>{playlistsLi}</ul>
         <button
           onClick={() => {
-            if (data?.playlists?.pageInfo?.hasNextPage) {
+            if (data?.playlists?.pageInfo.hasPreviousPage) {
               setParameters({
-                first,
-                cursor: data?.playlists?.pageInfo?.endCursor,
+                first: null,
+                last: numberOfPlaylists,
+                after: '',
+                before: data?.playlists?.pageInfo.startCursor || undefined,
               });
-              console.log(JSON.stringify(parameters));
             }
           }}
-          disabled={!data?.playlists?.pageInfo?.hasNextPage}
+          disabled={!data?.playlists?.pageInfo.hasPreviousPage}
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => {
+            if (data?.playlists?.pageInfo.hasNextPage) {
+              setParameters({
+                first: numberOfPlaylists,
+                last: null,
+                after: data?.playlists?.pageInfo.endCursor || undefined,
+                before: '',
+              });
+            }
+          }}
+          disabled={!data?.playlists?.pageInfo.hasNextPage}
         >
           Next
         </button>
@@ -58,18 +78,7 @@ export default function Playlists() {
       <Heading variant="h1">{t('playlists.title')}</Heading>
       <Hr />
       <p>Playlists anyone?</p>
-
-      <main>
-        {playlists}
-
-        {/* <button
-          onClick={() => {
-            console.log('next');
-          }}
-        >
-          Next
-        </button> */}
-      </main>
+      {playlists}
     </Page>
   );
 }

@@ -10,8 +10,8 @@
 #     after: $cursorAfter
 #     before: $cursorBefore
 #   )
-query PlaylistsQuery($first: Int, $after: String) {
-  playlists(first: $first, after: $after) {
+query PlaylistsQuery($first: Int, $last: Int, $after: String, $before: String) {
+  playlists(first: $first, last: $last, after: $after, before: $before) {
     edges {
       node {
         id
