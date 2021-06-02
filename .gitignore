@@ -4,7 +4,8 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-.eslintcache
+# dont add these files to git as there are 5k changes after setup
+/vendor
 
 # Ignore bundler config.
 /.bundle
@@ -40,3 +41,6 @@ yarn-debug.log*
 
 # Ignore local variables
 .env.local
+
+# eslint
+.eslintcache
