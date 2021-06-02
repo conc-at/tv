@@ -30,6 +30,10 @@ export function App() {
           <Route exact path="/home">
             <Home />
           </Route>
+
+          <Route path="/">
+            <Redirect to="/home" />
+          </Route>
         </Switch>
       </Router>
     </>
