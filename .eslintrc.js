@@ -21,6 +21,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     semi: [2, 'always'],
+    'import/prefer-default-export': 0,
   },
   env: {
     es6: true,

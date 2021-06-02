@@ -10,16 +10,18 @@ import 'sanitize.css';
 import 'sanitize.css/forms.css';
 import 'sanitize.css/typography.css';
 import 'react-virtualized/styles.css';
+import { ApolloProvider } from '@apollo/client';
 
 import { Playlists } from 'sections';
 
 import { Nav } from './components';
 import './styles.scss';
 import './i18n';
+import { client } from './client';
 
 export function App() {
   return (
-    <>
+    <ApolloProvider client={client}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Concat TV</title>
@@ -32,6 +34,6 @@ export function App() {
           <Route path="/playlists" component={Playlists} />
         </Switch>
       </Router>
-    </>
+    </ApolloProvider>
   );
 }
