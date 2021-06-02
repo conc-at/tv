@@ -16,7 +16,7 @@ import './styles.scss';
 import './i18n';
 import { Playlists } from 'sections/playlists';
 import { NotFound, Test } from './pages';
-import Home from 'sections/home/Home';
+import { Home } from 'sections/home';
 
 export function App() {
   return (
