@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
 } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
 import { Helmet } from 'react-helmet';
 import 'sanitize.css';
 import 'sanitize.css/forms.css';
@@ -17,9 +18,11 @@ import { Nav } from './components';
 import './styles.scss';
 import './i18n';
 
+import { client } from './client';
+
 export function App() {
   return (
-    <>
+    <ApolloProvider client={client}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Concat TV</title>
@@ -32,6 +35,6 @@ export function App() {
           <Route path="/playlists" component={Playlists} />
         </Switch>
       </Router>
-    </>
+    </ApolloProvider>
   );
 }
