@@ -38,3 +38,7 @@ yarn-debug.log*
 
 # Ignore local variables
 .env.local
+
+# eslint
+.eslintcache
+
