@@ -15,6 +15,7 @@ import { Nav } from './components/nav/Nav';
 import './styles.scss';
 import './i18n';
 import { Home } from '../sections/home/Home';
+import Playlists from 'sections/playlists/Playlists';
 
 export function App() {
   return (
@@ -33,6 +34,10 @@ export function App() {
 
           <Route path="/">
             <Redirect to="/home" />
+          </Route>
+
+          <Route path="/playlists">
+            <Playlists />
           </Route>
         </Switch>
       </Router>
