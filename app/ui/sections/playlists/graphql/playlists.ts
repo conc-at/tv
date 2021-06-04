@@ -2,52 +2,60 @@ import * as Types from '../../../types';
 
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-const defaultOptions =  {}
+const defaultOptions = {};
 export type PlaylistsQueryVariables = Types.Exact<{
   first?: Types.Maybe<Types.Scalars['Int']>;
   before?: Types.Maybe<Types.Scalars['String']>;
   after?: Types.Maybe<Types.Scalars['String']>;
 }>;
 
-
-export type PlaylistsQuery = (
-  { __typename?: 'Query' }
-  & { playlists?: Types.Maybe<(
-    { __typename?: 'PlaylistConnection' }
-    & { edges?: Types.Maybe<Array<Types.Maybe<(
-      { __typename?: 'PlaylistEdge' }
-      & Pick<Types.PlaylistEdge, 'cursor'>
-      & { node?: Types.Maybe<(
-        { __typename?: 'Playlist' }
-        & Pick<Types.Playlist, 'id' | 'name'>
-      )> }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<Types.PageInfo, 'endCursor' | 'startCursor' | 'hasNextPage' | 'hasPreviousPage'>
-    ) }
-  )> }
-);
-
+export type PlaylistsQuery = { __typename?: 'Query' } & {
+  playlists?: Types.Maybe<
+    { __typename?: 'PlaylistConnection' } & {
+      edges?: Types.Maybe<
+        Array<
+          Types.Maybe<
+            { __typename?: 'PlaylistEdge' } & Pick<
+              Types.PlaylistEdge,
+              'cursor'
+            > & {
+                node?: Types.Maybe<
+                  { __typename?: 'Playlist' } & Pick<
+                    Types.Playlist,
+                    'id' | 'name'
+                  >
+                >;
+              }
+          >
+        >
+      >;
+      pageInfo: { __typename?: 'PageInfo' } & Pick<
+        Types.PageInfo,
+        'endCursor' | 'startCursor' | 'hasNextPage' | 'hasPreviousPage'
+      >;
+    }
+  >;
+};
 
 export const PlaylistsDocument = gql`
-    query playlists($first: Int, $before: String, $after: String) {
-  playlists(first: $first, before: $before, after: $after) {
-    edges {
-      node {
-        id
-        name
+  query playlists($first: Int, $before: String, $after: String) {
+    playlists(first: $first, before: $before, after: $after) {
+      edges {
+        node {
+          id
+          name
+        }
+        cursor
       }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      startCursor
-      hasNextPage
-      hasPreviousPage
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __usePlaylistsQuery__
@@ -67,14 +75,35 @@ export const PlaylistsDocument = gql`
  *   },
  * });
  */
-export function usePlaylistsQuery(baseOptions?: Apollo.QueryHookOptions<PlaylistsQuery, PlaylistsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PlaylistsQuery, PlaylistsQueryVariables>(PlaylistsDocument, options);
-      }
-export function usePlaylistsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PlaylistsQuery, PlaylistsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PlaylistsQuery, PlaylistsQueryVariables>(PlaylistsDocument, options);
-        }
+export function usePlaylistsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    PlaylistsQuery,
+    PlaylistsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PlaylistsQuery, PlaylistsQueryVariables>(
+    PlaylistsDocument,
+    options,
+  );
+}
+export function usePlaylistsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    PlaylistsQuery,
+    PlaylistsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PlaylistsQuery, PlaylistsQueryVariables>(
+    PlaylistsDocument,
+    options,
+  );
+}
 export type PlaylistsQueryHookResult = ReturnType<typeof usePlaylistsQuery>;
-export type PlaylistsLazyQueryHookResult = ReturnType<typeof usePlaylistsLazyQuery>;
-export type PlaylistsQueryResult = Apollo.QueryResult<PlaylistsQuery, PlaylistsQueryVariables>;
+export type PlaylistsLazyQueryHookResult = ReturnType<
+  typeof usePlaylistsLazyQuery
+>;
+export type PlaylistsQueryResult = Apollo.QueryResult<
+  PlaylistsQuery,
+  PlaylistsQueryVariables
+>;
