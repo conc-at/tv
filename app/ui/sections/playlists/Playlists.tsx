@@ -11,11 +11,24 @@ export default function Playlists() {
   const { t } = useTranslation();
   // state
   const [playlistVariables, setPlaylistVariables] =
-    useState<PlaylistsQueryVariables>({});
+    useState<PlaylistsQueryVariables>({ first: 3 });
 
   const { data, loading, error } = usePlaylistsQuery({
     variables: playlistVariables,
   });
+
+  // for pagination
+  const next = () =>
+    setPlaylistVariables({
+      after: data?.playlists?.pageInfo.endCursor,
+      before: null,
+    });
+
+  const previous = () =>
+    setPlaylistVariables({
+      after: null,
+      before: data?.playlists?.pageInfo.startCursor,
+    });
 
   return (
     <Page>
@@ -28,7 +41,9 @@ export default function Playlists() {
       {error && <p>{error.message}</p>}
       {!loading && (
         <>
-          <ul style={{ listStyle: 'none', padding: '0px' }}>
+          <ul
+            style={{ listStyle: 'none', padding: '0px', marginBottom: '15px' }}
+          >
             {data?.playlists?.edges?.map((edge) => (
               <li key={edge?.node?.id} style={{ margin: '10px 0' }}>
                 #{edge?.node?.id}
@@ -38,6 +53,14 @@ export default function Playlists() {
               </li>
             ))}
           </ul>
+
+          {data?.playlists?.pageInfo.hasPreviousPage ? (
+            <Button onClick={previous}>previous page</Button>
+          ) : null}
+
+          {data?.playlists?.pageInfo.hasNextPage ? (
+            <Button onClick={next}>next page</Button>
+          ) : null}
         </>
       )}
     </Page>
