@@ -1,0 +1,17 @@
+query playlists ($first: Int, $before: String, $after: String) {
+  playlists (first: $first, before: $before, after: $after) {
+    edges {
+      node {
+        id
+        name
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
