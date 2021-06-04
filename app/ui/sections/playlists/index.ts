@@ -1,1 +1,1 @@
-export { Playlists } from './Playlists.lazy';
+export { Playlists } from './Playlists';

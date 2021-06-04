@@ -16,10 +16,12 @@ import { Playlists } from 'sections';
 import { Nav } from './components';
 import './styles.scss';
 import './i18n';
+import { ApolloProvider } from '@apollo/client';
+import apolloClient from './client';
 
 export function App() {
   return (
-    <>
+    <ApolloProvider client={apolloClient}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Concat TV</title>
@@ -32,6 +34,6 @@ export function App() {
           <Route path="/playlists" component={Playlists} />
         </Switch>
       </Router>
-    </>
+    </ApolloProvider>
   );
 }
