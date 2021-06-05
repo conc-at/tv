@@ -1,0 +1,17 @@
+query AllPlaylists($first: Int, $last: Int, $after: String, $before: String) {
+  playlists(first: $first, last: $last, after: $after, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        name
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
