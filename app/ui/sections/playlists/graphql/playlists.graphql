@@ -1,0 +1,7 @@
+query Playlists {
+  playlists(first: 5) {
+    nodes {
+      id
+    }
+  }
+}
