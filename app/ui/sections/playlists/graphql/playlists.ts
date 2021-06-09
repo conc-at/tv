@@ -3,62 +3,51 @@ import * as Types from '../../../types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions =  {}
-export type PlaylistFieldsFragment = (
-  { __typename?: 'Playlist' }
-  & Pick<Types.Playlist, 'id' | 'name'>
-);
-
-export type PlaylistsQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type PlaylistsQueryVariables = Types.Exact<{
+  n?: Types.Maybe<Types.Scalars['Int']>;
+  after?: Types.Maybe<Types.Scalars['String']>;
+  before?: Types.Maybe<Types.Scalars['String']>;
+}>;
 
 
 export type PlaylistsQuery = (
   { __typename?: 'Query' }
   & { playlists?: Types.Maybe<(
     { __typename?: 'PlaylistConnection' }
-    & { edges?: Types.Maybe<Array<Types.Maybe<(
+    & { pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<Types.PageInfo, 'hasNextPage' | 'hasPreviousPage' | 'startCursor' | 'endCursor'>
+    ), edges?: Types.Maybe<Array<Types.Maybe<(
       { __typename?: 'PlaylistEdge' }
+      & Pick<Types.PlaylistEdge, 'cursor'>
       & { node?: Types.Maybe<(
         { __typename?: 'Playlist' }
-        & { channels?: Types.Maybe<(
-          { __typename?: 'ChannelConnection' }
-          & { edges?: Types.Maybe<Array<Types.Maybe<(
-            { __typename?: 'ChannelEdge' }
-            & { node?: Types.Maybe<(
-              { __typename?: 'Channel' }
-              & Pick<Types.Channel, 'id'>
-            )> }
-          )>>> }
-        )> }
-        & PlaylistFieldsFragment
+        & Pick<Types.Playlist, 'id' | 'name'>
       )> }
     )>>> }
   )> }
 );
 
-export const PlaylistFieldsFragmentDoc = gql`
-    fragment PlaylistFields on Playlist {
-  id
-  name
-}
-    `;
+
 export const PlaylistsDocument = gql`
-    query Playlists {
-  playlists {
+    query Playlists($n: Int, $after: String, $before: String) {
+  playlists(first: $n, after: $after, before: $before) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
     edges {
+      cursor
       node {
-        ...PlaylistFields
-        channels {
-          edges {
-            node {
-              id
-            }
-          }
-        }
+        id
+        name
       }
     }
   }
 }
-    ${PlaylistFieldsFragmentDoc}`;
+    `;
 
 /**
  * __usePlaylistsQuery__
@@ -72,6 +61,9 @@ export const PlaylistsDocument = gql`
  * @example
  * const { data, loading, error } = usePlaylistsQuery({
  *   variables: {
+ *      n: // value for 'n'
+ *      after: // value for 'after'
+ *      before: // value for 'before'
  *   },
  * });
  */
