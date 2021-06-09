@@ -1,3 +1,3 @@
 export { Playlists } from './playlists';
-export { Home } from './home'
-export { NotFound } from './notFound'
+export { Home } from './home';
+export { NotFound } from './notFound';
