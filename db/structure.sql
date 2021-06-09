@@ -37,33 +37,33 @@ CREATE FUNCTION public.channels_sbt_initial_row_position() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    pos RATIONALE; -- fraction above insert position
+pos RATIONALE; -- fraction above insert position
     np  int; nq int; -- new insert position fraction
 BEGIN
     -- lock the row
     PERFORM 1 FROM "channels"
       WHERE "id" = NEW."id" FOR UPDATE;
 
-    -- find the next adjacent row in the desired direction
-    SELECT (c."position").p, (c."position").q
-    INTO pos.p, pos.q
-    FROM channels c
-    WHERE c."id" != NEW."id"
-      AND (("position").p::float8 / ("position").q) > 0
-    ORDER BY (("position").p::float8 / ("position").q) DESC
+-- find the next adjacent row in the desired direction
+SELECT (c."position").p, (c."position").q
+INTO pos.p, pos.q
+FROM channels c
+WHERE c."id" != NEW."id"
+  AND (("position").p::float8 / ("position").q) > 0
+ORDER BY (("position").p::float8 / ("position").q) DESC
     LIMIT 1;
 
-    -- compute insert fraction
-    SELECT *
-    INTO np, nq
-    FROM channels_sbt_mediant(
-            COALESCE(pos.p, 0), COALESCE(pos.q, 1),
-            1, 0);
+-- compute insert fraction
+SELECT *
+INTO np, nq
+FROM channels_sbt_mediant(
+        COALESCE(pos.p, 0), COALESCE(pos.q, 1),
+        1, 0);
 
-    -- set the position
-    NEW."position" = (np, nq);
+-- set the position
+NEW."position" = (np, nq);
 
-    RETURN NEW;
+RETURN NEW;
 END;
 $$;
 
@@ -76,7 +76,7 @@ CREATE FUNCTION public.channels_sbt_mediant(p1 integer, q1 integer, p2 integer, 
     LANGUAGE plpgsql IMMUTABLE STRICT
     AS $$
 DECLARE
-    pl INTEGER := 0;
+pl INTEGER := 0;
     ql INTEGER := 1;
     ph INTEGER := 1;
     qh INTEGER := 0;
@@ -89,14 +89,14 @@ BEGIN
                 pl := p; ql := q;
             elsif (p2::BIGINT * q <= q2::BIGINT * p) THEN
                 ph := p; qh := q;
-            ELSE
+ELSE
                 exit;
-            END IF;
-        END loop;
-    ELSE
+END IF;
+END loop;
+ELSE
         p := p1 + p2;
         q := q1 + q2;
-    END IF;
+END IF;
 END;
 $$;
 
@@ -109,7 +109,7 @@ CREATE FUNCTION public.channels_sbt_move_row(row_id integer, rel_id integer, is_
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    pos1  RATIONALE; -- fraction below insert position
+pos1  RATIONALE; -- fraction below insert position
     pos2  RATIONALE; -- fraction above insert position
     r_rel DOUBLE PRECISION; -- p/q of the rel_id row
     np    int; nq int; -- new insert position fraction
@@ -117,62 +117,62 @@ BEGIN
     -- lock the row
     PERFORM 1 FROM "channels" WHERE "id" = row_id FOR UPDATE;
 
-    -- moving a record to its own position is a no-op
-    IF rel_id = row_id THEN RETURN; END IF;
+-- moving a record to its own position is a no-op
+IF rel_id = row_id THEN RETURN; END IF;
 
     -- if we're positioning next to a specified row, it must exist
     IF rel_id IS NOT NULL THEN
-        SELECT (t."position").p, (t."position").q
-          FROM "channels" t
-          WHERE "id" = rel_id
-          INTO strict pos1.p, pos1.q;
-        r_rel := pos1.p::float8 / pos1.q;
-    END IF;
+SELECT (t."position").p, (t."position").q
+FROM "channels" t
+WHERE "id" = rel_id
+INTO strict pos1.p, pos1.q;
+r_rel := pos1.p::float8 / pos1.q;
+END IF;
 
-    
+
     -- find the next adjacent row in the desired direction
     -- (might not exist).
     IF is_before THEN
         pos2.p := pos1.p; pos2.q := pos1.q;
-        SELECT (t2."position").p, (t2."position").q
-          FROM "channels" t2
-          WHERE "id" != row_id
-            AND (
-              ("position").p::float8 / ("position").q) < COALESCE(r_rel, 'infinity')
-          ORDER BY (
-              ("position").p::float8 / ("position").q) DESC
-          LIMIT 1
-          INTO pos1.p, pos1.q;
-    ELSE
-        SELECT (t3."position").p, (t3."position").q
-          FROM "channels" t3
-          WHERE "id" != row_id
-            AND (("position").p::float8 / ("position").q) > COALESCE(r_rel, 0)
-          ORDER BY (("position").p::float8 / ("position").q) ASC
-          LIMIT 1
-          INTO pos2.p, pos2.q;
-    END IF;
-    
-    -- compute insert fraction
-    SELECT *
-    INTO np, nq
-    FROM channels_sbt_mediant(COALESCE(pos1.p, 0), COALESCE(pos1.q, 1),
-                     COALESCE(pos2.p, 1), COALESCE(pos2.q, 0));
-    
-    
-    -- move the specified row
-    UPDATE "channels"
-      SET ("position".p, "position".q) = (np, nq)
-    WHERE "id" = row_id;
-    
-    -- want to renormalize both to avoid possibility of integer overflow
-    -- and to ensure that distinct fraction values map to distinct float8
-    -- values. Bounding to 10 million gives us reasonable headroom while
-    -- not requiring frequent normalization.
+SELECT (t2."position").p, (t2."position").q
+FROM "channels" t2
+WHERE "id" != row_id
+  AND (
+    ("position").p::float8 / ("position").q) < COALESCE(r_rel, 'infinity')
+ORDER BY (
+    ("position").p::float8 / ("position").q) DESC
+    LIMIT 1
+INTO pos1.p, pos1.q;
+ELSE
+SELECT (t3."position").p, (t3."position").q
+FROM "channels" t3
+WHERE "id" != row_id
+  AND (("position").p::float8 / ("position").q) > COALESCE(r_rel, 0)
+ORDER BY (("position").p::float8 / ("position").q) ASC
+    LIMIT 1
+INTO pos2.p, pos2.q;
+END IF;
 
-    IF (np > 10000000) OR (nq > 10000000) THEN
+    -- compute insert fraction
+SELECT *
+INTO np, nq
+FROM channels_sbt_mediant(COALESCE(pos1.p, 0), COALESCE(pos1.q, 1),
+                          COALESCE(pos2.p, 1), COALESCE(pos2.q, 0));
+
+
+-- move the specified row
+UPDATE "channels"
+SET ("position".p, "position".q) = (np, nq)
+WHERE "id" = row_id;
+
+-- want to renormalize both to avoid possibility of integer overflow
+-- and to ensure that distinct fraction values map to distinct float8
+-- values. Bounding to 10 million gives us reasonable headroom while
+-- not requiring frequent normalization.
+
+IF (np > 10000000) OR (nq > 10000000) THEN
         perform channels_sbt_renormalize();
-    END IF;
+END IF;
 END;
 $$;
 
@@ -186,12 +186,12 @@ CREATE FUNCTION public.channels_sbt_renormalize() RETURNS void
     AS $$
 BEGIN
     -- lock the table
-    SELECT 1 FROM "channels" FOR UPDATE;
+SELECT 1 FROM "channels" FOR UPDATE;
 
-    -- normalize
-    UPDATE "channels" c
-      SET"position" = (s2.new_rnum, 2)
-        FROM (SELECT "id",
+-- normalize
+UPDATE "channels" c
+SET"position" = (s2.new_rnum, 2)
+    FROM (SELECT "id",
                      is_existing = 0 AS is_new,
                      -- increase the current value according to the
                      -- number of adjustment points passed
@@ -220,8 +220,8 @@ BEGIN
                    WHERE ("position").q = 2
               ) s1
             ) s2
-            WHERE s2."id" = c."id"
-              AND s2.is_new;
+WHERE s2."id" = c."id"
+  AND s2.is_new;
 END;
 $$;
 
@@ -234,36 +234,36 @@ CREATE FUNCTION public.playlist_channels_sbt_initial_row_position() RETURNS trig
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    pos RATIONALE; -- fraction above insert position
+pos RATIONALE; -- fraction above insert position
     np  int; nq int; -- new insert position fraction
 BEGIN
     -- lock the row
     PERFORM 1 FROM "playlist_channels" t
       WHERE t."id" = NEW."id" FOR UPDATE;
 
-    -- find the next adjacent row in the desired direction
-    SELECT (c."position").p, (c."position").q
-    INTO pos.p, pos.q
-    FROM playlist_channels c
-    WHERE c."id" != NEW."id"
-      AND (("position").p::float8 / ("position").q) > 0
-    ORDER BY (("position").p::float8 / ("position").q) DESC
+-- find the next adjacent row in the desired direction
+SELECT (c."position").p, (c."position").q
+INTO pos.p, pos.q
+FROM playlist_channels c
+WHERE c."id" != NEW."id"
+  AND (("position").p::float8 / ("position").q) > 0
+ORDER BY (("position").p::float8 / ("position").q) DESC
     LIMIT 1;
 
-    -- compute insert fraction
-    SELECT *
-    INTO np, nq
-    FROM playlist_channels_sbt_mediant(
-      COALESCE(pos.p, 0),
-      COALESCE(pos.q, 1),
-      1,
-      0
+-- compute insert fraction
+SELECT *
+INTO np, nq
+FROM playlist_channels_sbt_mediant(
+        COALESCE(pos.p, 0),
+        COALESCE(pos.q, 1),
+        1,
+        0
     );
 
-    -- set the position
-    NEW."position" = (np, nq);
+-- set the position
+NEW."position" = (np, nq);
 
-    RETURN NEW;
+RETURN NEW;
 END;
 $$;
 
@@ -276,7 +276,7 @@ CREATE FUNCTION public.playlist_channels_sbt_mediant(p1 integer, q1 integer, p2 
     LANGUAGE plpgsql IMMUTABLE STRICT
     AS $$
 DECLARE
-    pl INTEGER := 0;
+pl INTEGER := 0;
     ql INTEGER := 1;
     ph INTEGER := 1;
     qh INTEGER := 0;
@@ -289,14 +289,14 @@ BEGIN
                 pl := p; ql := q;
             ELSIF (p2::BIGINT * q <= q2::BIGINT * p) THEN
                 ph := p; qh := q;
-            ELSE
+ELSE
                 exit;
-            END IF;
-        END loop;
-    ELSE
+END IF;
+END loop;
+ELSE
         p := p1 + p2;
         q := q1 + q2;
-    END IF;
+END IF;
 END;
 $$;
 
@@ -309,7 +309,7 @@ CREATE FUNCTION public.playlist_channels_sbt_move_row(row_id integer, rel_id int
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    pos1  RATIONALE; -- fraction below insert position
+pos1  RATIONALE; -- fraction below insert position
     pos2  RATIONALE; -- fraction above insert position
     r_rel DOUBLE PRECISION; -- p/q of the rel_id row
     np    int; nq int; -- new insert position fraction
@@ -317,60 +317,60 @@ BEGIN
     -- lock the row
     PERFORM 1 FROM "playlist_channels" WHERE "id" = row_id FOR UPDATE;
 
-    -- moving a record to its own position is a no-op
-    IF rel_id = row_id THEN RETURN; END IF;
+-- moving a record to its own position is a no-op
+IF rel_id = row_id THEN RETURN; END IF;
 
     -- if we're positioning next to a specified row, it must exist
     IF rel_id IS NOT NULL THEN
-        SELECT (t."position").p, (t."position").q
-          FROM "playlist_channels" t
-          WHERE "id" = rel_id
-          INTO strict pos1.p, pos1.q;
-        r_rel := pos1.p::float8 / pos1.q;
-    END IF;
+SELECT (t."position").p, (t."position").q
+FROM "playlist_channels" t
+WHERE "id" = rel_id
+INTO strict pos1.p, pos1.q;
+r_rel := pos1.p::float8 / pos1.q;
+END IF;
 
     -- find the next adjacent row in the desired direction
     -- (might not exist).
     IF is_before THEN
         pos2.p := pos1.p; pos2.q := pos1.q;
-        SELECT (t2."position").p, (t2."position").q
-          FROM "playlist_channels" t2
-          WHERE "id" != row_id
-            AND (
-              ("position").p::float8 / ("position").q) < COALESCE(r_rel, 'infinity')
-          ORDER BY (
-              ("position").p::float8 / ("position").q) DESC
-          LIMIT 1
-          INTO pos1.p, pos1.q;
-    ELSE
-        SELECT (t3."position").p, (t3."position").q
-          FROM "playlist_channels" t3
-          WHERE "id" != row_id
-            AND (("position").p::float8 / ("position").q) > COALESCE(r_rel, 0)
-          ORDER BY (("position").p::float8 / ("position").q) ASC
-          LIMIT 1
-          INTO pos2.p, pos2.q;
-    END IF;
+SELECT (t2."position").p, (t2."position").q
+FROM "playlist_channels" t2
+WHERE "id" != row_id
+  AND (
+    ("position").p::float8 / ("position").q) < COALESCE(r_rel, 'infinity')
+ORDER BY (
+    ("position").p::float8 / ("position").q) DESC
+    LIMIT 1
+INTO pos1.p, pos1.q;
+ELSE
+SELECT (t3."position").p, (t3."position").q
+FROM "playlist_channels" t3
+WHERE "id" != row_id
+  AND (("position").p::float8 / ("position").q) > COALESCE(r_rel, 0)
+ORDER BY (("position").p::float8 / ("position").q) ASC
+    LIMIT 1
+INTO pos2.p, pos2.q;
+END IF;
 
     -- compute insert fraction
-    SELECT *
-    INTO np, nq
-    FROM playlist_channels_sbt_mediant(COALESCE(pos1.p, 0), COALESCE(pos1.q, 1),
-                     COALESCE(pos2.p, 1), COALESCE(pos2.q, 0));
+SELECT *
+INTO np, nq
+FROM playlist_channels_sbt_mediant(COALESCE(pos1.p, 0), COALESCE(pos1.q, 1),
+                                   COALESCE(pos2.p, 1), COALESCE(pos2.q, 0));
 
-    -- move the specified row
-    UPDATE "playlist_channels"
-      SET ("position".p, "position".q) = (np, nq)
-      WHERE "id" = row_id;
+-- move the specified row
+UPDATE "playlist_channels"
+SET ("position".p, "position".q) = (np, nq)
+WHERE "id" = row_id;
 
-    -- want to renormalize both to avoid possibility of integer overflow
-    -- and to ensure that distinct fraction values map to distinct float8
-    -- values. Bounding to 10 million gives us reasonable headroom while
-    -- not requiring frequent normalization.
+-- want to renormalize both to avoid possibility of integer overflow
+-- and to ensure that distinct fraction values map to distinct float8
+-- values. Bounding to 10 million gives us reasonable headroom while
+-- not requiring frequent normalization.
 
-    IF (np > 10000000) OR (nq > 10000000) THEN
+IF (np > 10000000) OR (nq > 10000000) THEN
         perform playlist_channels_sbt_renormalize();
-    END IF;
+END IF;
 END;
 $$;
 
@@ -384,12 +384,12 @@ CREATE FUNCTION public.playlist_channels_sbt_renormalize() RETURNS void
     AS $$
 BEGIN
     -- lock the table
-    SELECT 1 FROM "playlist_channels" FOR UPDATE;
+SELECT 1 FROM "playlist_channels" FOR UPDATE;
 
-    -- normalize
-    UPDATE "playlist_channels" c
-      SET"position" = (s2.new_rnum, 2)
-        FROM (SELECT "id",
+-- normalize
+UPDATE "playlist_channels" c
+SET"position" = (s2.new_rnum, 2)
+    FROM (SELECT "id",
                      is_existing = 0 AS is_new,
                      -- increase the current value according to the
                      -- number of adjustment points passed
@@ -418,8 +418,8 @@ BEGIN
                    WHERE ("position").q = 2
               ) s1
             ) s2
-            WHERE s2."id" = c."id"
-              AND s2.is_new;
+WHERE s2."id" = c."id"
+  AND s2.is_new;
 END;
 $$;
 
@@ -432,36 +432,36 @@ CREATE FUNCTION public.playlists_sbt_initial_row_position() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    pos RATIONALE; -- fraction above insert position
+pos RATIONALE; -- fraction above insert position
     np  int; nq int; -- new insert position fraction
 BEGIN
     -- lock the row
     PERFORM 1 FROM "playlists" t
       WHERE t."id" = NEW."id" FOR UPDATE;
 
-    -- find the next adjacent row in the desired direction
-    SELECT (c."position").p, (c."position").q
-    INTO pos.p, pos.q
-    FROM playlists c
-    WHERE c."id" != NEW."id"
-      AND (("position").p::float8 / ("position").q) > 0
-    ORDER BY (("position").p::float8 / ("position").q) DESC
+-- find the next adjacent row in the desired direction
+SELECT (c."position").p, (c."position").q
+INTO pos.p, pos.q
+FROM playlists c
+WHERE c."id" != NEW."id"
+  AND (("position").p::float8 / ("position").q) > 0
+ORDER BY (("position").p::float8 / ("position").q) DESC
     LIMIT 1;
 
-    -- compute insert fraction
-    SELECT *
-    INTO np, nq
-    FROM playlists_sbt_mediant(
-      COALESCE(pos.p, 0),
-      COALESCE(pos.q, 1),
-      1,
-      0
+-- compute insert fraction
+SELECT *
+INTO np, nq
+FROM playlists_sbt_mediant(
+        COALESCE(pos.p, 0),
+        COALESCE(pos.q, 1),
+        1,
+        0
     );
 
-    -- set the position
-    NEW."position" = (np, nq);
+-- set the position
+NEW."position" = (np, nq);
 
-    RETURN NEW;
+RETURN NEW;
 END;
 $$;
 
@@ -474,7 +474,7 @@ CREATE FUNCTION public.playlists_sbt_mediant(p1 integer, q1 integer, p2 integer,
     LANGUAGE plpgsql IMMUTABLE STRICT
     AS $$
 DECLARE
-    pl INTEGER := 0;
+pl INTEGER := 0;
     ql INTEGER := 1;
     ph INTEGER := 1;
     qh INTEGER := 0;
@@ -487,14 +487,14 @@ BEGIN
                 pl := p; ql := q;
             elsif (p2::BIGINT * q <= q2::BIGINT * p) THEN
                 ph := p; qh := q;
-            ELSE
+ELSE
                 exit;
-            END IF;
-        END loop;
-    ELSE
+END IF;
+END loop;
+ELSE
         p := p1 + p2;
         q := q1 + q2;
-    END IF;
+END IF;
 END;
 $$;
 
@@ -507,7 +507,7 @@ CREATE FUNCTION public.playlists_sbt_move_row(row_id integer, rel_id integer, is
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    pos1  RATIONALE; -- fraction below insert position
+pos1  RATIONALE; -- fraction below insert position
     pos2  RATIONALE; -- fraction above insert position
     r_rel DOUBLE PRECISION; -- p/q of the rel_id row
     np    int; nq int; -- new insert position fraction
@@ -515,60 +515,60 @@ BEGIN
     -- lock the row
     PERFORM 1 FROM "playlists" WHERE "id" = row_id FOR UPDATE;
 
-    -- moving a record to its own position is a no-op
-    IF rel_id = row_id THEN RETURN; END IF;
+-- moving a record to its own position is a no-op
+IF rel_id = row_id THEN RETURN; END IF;
 
     -- if we're positioning next to a specified row, it must exist
     IF rel_id IS NOT NULL THEN
-        SELECT (t."position").p, (t."position").q
-          FROM "playlists" t
-          WHERE "id" = rel_id
-          INTO strict pos1.p, pos1.q;
-        r_rel := pos1.p::float8 / pos1.q;
-    END IF;
+SELECT (t."position").p, (t."position").q
+FROM "playlists" t
+WHERE "id" = rel_id
+INTO strict pos1.p, pos1.q;
+r_rel := pos1.p::float8 / pos1.q;
+END IF;
 
     -- find the next adjacent row in the desired direction
     -- (might not exist).
     IF is_before THEN
         pos2.p := pos1.p; pos2.q := pos1.q;
-        SELECT (t2."position").p, (t2."position").q
-          FROM "playlists" t2
-          WHERE "id" != row_id
-            AND (
-              ("position").p::float8 / ("position").q) < COALESCE(r_rel, 'infinity')
-          ORDER BY (
-              ("position").p::float8 / ("position").q)
-          DESC LIMIT 1
-          INTO pos1.p, pos1.q;
-    ELSE
-        SELECT (t3."position").p, (t3."position").q
-          FROM "playlists" t3
-          WHERE "id" != row_id
-            AND (("position").p::float8 / ("position").q) > COALESCE(r_rel, 0)
-          ORDER BY (("position").p::float8 / ("position").q)
-          LIMIT 1
-          INTO pos2.p, pos2.q;
-    END IF;
+SELECT (t2."position").p, (t2."position").q
+FROM "playlists" t2
+WHERE "id" != row_id
+  AND (
+    ("position").p::float8 / ("position").q) < COALESCE(r_rel, 'infinity')
+ORDER BY (
+    ("position").p::float8 / ("position").q)
+        DESC LIMIT 1
+INTO pos1.p, pos1.q;
+ELSE
+SELECT (t3."position").p, (t3."position").q
+FROM "playlists" t3
+WHERE "id" != row_id
+  AND (("position").p::float8 / ("position").q) > COALESCE(r_rel, 0)
+ORDER BY (("position").p::float8 / ("position").q)
+    LIMIT 1
+INTO pos2.p, pos2.q;
+END IF;
 
     -- compute insert fraction
-    SELECT *
-    INTO np, nq
-    FROM playlists_sbt_mediant(COALESCE(pos1.p, 0), COALESCE(pos1.q, 1),
-                     COALESCE(pos2.p, 1), COALESCE(pos2.q, 0));
+SELECT *
+INTO np, nq
+FROM playlists_sbt_mediant(COALESCE(pos1.p, 0), COALESCE(pos1.q, 1),
+                           COALESCE(pos2.p, 1), COALESCE(pos2.q, 0));
 
-    -- move the specified row
-    UPDATE "playlists"
-      SET ("position".p, "position".q) = (np, nq)
-      WHERE "id" = row_id;
+-- move the specified row
+UPDATE "playlists"
+SET ("position".p, "position".q) = (np, nq)
+WHERE "id" = row_id;
 
-    -- want to renormalize both to avoid possibility of integer overflow
-    -- and to ensure that distinct fraction values map to distinct float8
-    -- values. Bounding to 10 million gives us reasonable headroom while
-    -- not requiring frequent normalization.
+-- want to renormalize both to avoid possibility of integer overflow
+-- and to ensure that distinct fraction values map to distinct float8
+-- values. Bounding to 10 million gives us reasonable headroom while
+-- not requiring frequent normalization.
 
-    IF (np > 10000000) OR (nq > 10000000) THEN
+IF (np > 10000000) OR (nq > 10000000) THEN
         perform playlists_sbt_renormalize();
-    END IF;
+END IF;
 END;
 $$;
 
@@ -582,12 +582,12 @@ CREATE FUNCTION public.playlists_sbt_renormalize() RETURNS void
     AS $$
 BEGIN
     -- lock the table
-    SELECT 1 FROM "playlists" FOR UPDATE;
+SELECT 1 FROM "playlists" FOR UPDATE;
 
-    -- normalize
-    UPDATE "playlists" c
-      SET"position" = (s2.new_rnum, 2)
-        FROM (SELECT "id",
+-- normalize
+UPDATE "playlists" c
+SET"position" = (s2.new_rnum, 2)
+    FROM (SELECT "id",
                      is_existing = 0 AS is_new,
                      -- increase the current value according to the
                      -- number of adjustment points passed
@@ -616,8 +616,8 @@ BEGIN
                    WHERE ("position").q = 2
               ) s1
             ) s2
-            WHERE s2."id" = c."id"
-              AND s2.is_new;
+WHERE s2."id" = c."id"
+  AND s2.is_new;
 END;
 $$;
 
@@ -1007,7 +1007,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200517192021'),
 ('20200517192132'),
 ('20200517192245'),
-('20200517192358'),
-('20210531104604');
+('20200517192358');
 
 

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Heading, Hr, Page, Stack } from 'components';
@@ -12,20 +12,36 @@ import {
 export default function Playlists() {
   const { t } = useTranslation();
 
-  const first = 3;
+  const pageSize = 3;
 
-  const { data, fetchMore } = useFetchPlaylistsQuery({ variables: { first } });
+  const { data, fetchMore } = useFetchPlaylistsQuery({
+    variables: { first: pageSize },
+  });
   const playlists = extractPlaylists(data);
 
   const hasNextPage = data?.playlists?.pageInfo.hasNextPage;
+  const hasPrevPage = data?.playlists?.pageInfo.hasPreviousPage;
 
-  const loadMore = useCallback(() => {
+  const nextPage = useCallback(() => {
     const endCursor = data?.playlists?.pageInfo.endCursor;
 
     fetchMore({
       variables: {
-        first,
+        first: pageSize,
+        last: undefined,
         after: endCursor,
+      },
+    });
+  }, [data?.playlists?.pageInfo.endCursor, fetchMore]);
+
+  const prevPage = useCallback(() => {
+    const startCursor = data?.playlists?.pageInfo.startCursor;
+
+    fetchMore({
+      variables: {
+        first: undefined,
+        last: pageSize,
+        before: startCursor,
       },
     });
   }, [data?.playlists?.pageInfo.endCursor, fetchMore]);
@@ -38,9 +54,14 @@ export default function Playlists() {
         <List playlists={playlists} />
       </Stack>
       <Stack align="horizontal">
+        {hasPrevPage && (
+          <Button variant="button" onClick={prevPage}>
+            Prev Page
+          </Button>
+        )}
         {hasNextPage && (
-          <Button variant="button" onClick={loadMore}>
-            Load more
+          <Button variant="button" onClick={nextPage}>
+            Next Page
           </Button>
         )}
       </Stack>
