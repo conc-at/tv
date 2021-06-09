@@ -1,10 +1,11 @@
-query Playlists($n: Int, $after: String, $before: String) {
-  playlists(first: $n, after: $after, before: $before) {
+
+query FetchPlaylists($first: Int, $last: Int, $before: String, $after: String) {
+  playlists(first: $first, last: $last, before: $before, after: $after) {
     pageInfo {
       hasNextPage
       hasPreviousPage
-      startCursor
       endCursor
+      startCursor
     }
     edges {
       cursor
