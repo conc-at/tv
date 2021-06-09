@@ -1,5 +1,5 @@
-query playlists($after: String, $before: String) {
-  playlists(first: 10, after: $after, before: $before) {
+query playlists($after: String, $before: String, $first: Int, $last: Int) {
+  playlists(first: $first, last: $last after: $after, before: $before) {
     edges {
       node {
         id
