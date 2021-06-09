@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'http://localhost:5000/graphql'
+schema: 'https://tv.conc.at/graphql'
 documents: 'app/ui/**/*.graphql'
 generates:
   app/ui/types.ts:

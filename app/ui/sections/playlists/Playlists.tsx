@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Heading, Hr, Page } from 'components';
 import { gql, useQuery } from '@apollo/client';
+import { usePlaylistsQuery } from './graphql/playlists.gen';
 
 
 
@@ -18,9 +19,7 @@ export default function Playlists() {
 
   const [playlists, setPlaylists] = useState(undefined)
 
-  useEffect(() => {
-    setPlaylists(data)
-  }, [data]);
+  useEffect(() => setPlaylists(data), [data]);
 
   const handleClick = () => {
 
