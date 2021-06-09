@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 module.exports = {
   plugins: ['graphql', 'import', 'jsx-a11y', 'prettier'],
   rules: {
@@ -55,7 +54,7 @@ module.exports = {
     },
   },
 };
-=======
+/*
 module.exports = {
   plugins: ['graphql', 'import', 'jsx-a11y', 'prettier'],
   rules: {
@@ -114,4 +113,4 @@ module.exports = {
     },
   },
 };
->>>>>>> bfce3b6188278d24bc8b012453a8836d95c87a6e
+*/
