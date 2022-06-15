@@ -139,7 +139,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.5.2)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rack-proxy (0.7.0)
       rack
     rack-test (1.1.0)
@@ -233,7 +233,7 @@ GEM
       sprockets-rails
       tilt
     semantic_range (3.0.0)
-    sidekiq (6.2.1)
+    sidekiq (6.5.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -310,7 +310,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   sass-rails (>= 6)
-  sidekiq (~> 6.2.1)
+  sidekiq (~> 6.5.1)
   sidekiq-cron (~> 1.2.0)
   simplecov (~> 0.21.2)
   spring

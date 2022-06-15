@@ -17,7 +17,7 @@ gem 'rails', '~> 6.1.3'
 gem 'redis', '~> 4.2.5'
 gem 'rm3u', github: 'jonaskay/rm3u', branch: 'master'
 gem 'sass-rails', '>= 6'
-gem 'sidekiq', '~> 6.2.1'
+gem 'sidekiq', '~> 6.5.1'
 gem 'sidekiq-cron', '~> 1.2.0'
 gem 'turbolinks', '~> 5'
 gem 'typhoeus', '~> 1.4.0', platforms: %i[ruby] # to make this work on windows, install libcurl
